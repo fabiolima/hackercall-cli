@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 import { program } from "commander";
-import { startClientServer, openClient } from "./utils/index.js";
-import { randomUUID } from "node:crypto";
+import { openClient } from "./utils/index.js";
 
-const openBrowser = async (peerId) => {
-  let clientURL = await startClientServer();
-  clientURL = peerId ? `${clientURL}?peerId=${peerId}` : clientURL;
+const clientURL = new URL("https://hackercall-client.onrender.com");
+
+const openBrowser = async (peerId = null) => {
+  if (typeof peerId === "string")
+    clientURL.searchParams.append("peerId", peerId);
+
   await openClient(clientURL);
 };
 
